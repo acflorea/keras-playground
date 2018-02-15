@@ -18,8 +18,11 @@ import sys, getopt, time
 
 
 def main(argumentList):
-    unixOptions = "a:b:m:k:e:t:"
-    gnuOptions = ["augmentation=", "batch_size=", "model_name=", "model_key=", "epochs=", "test_mode="]
+    trues = ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']
+
+    unixOptions = "a:b:m:k:e:t:c:"
+    gnuOptions = ["augmentation=", "batch_size=", "model_name=", "model_key=", "epochs=", "test_mode=",
+                  "conv_layers="]
 
     try:
         arguments, values = getopt.getopt(argumentList, unixOptions, gnuOptions)
@@ -30,11 +33,12 @@ def main(argumentList):
 
     argumentsDict = dict(arguments)
 
-    test_mode = bool(argumentsDict.get('-t', argumentsDict.get('--test_mode', False)))
+    test_mode = getValue(argumentsDict, '-t', '--test_mode', False) in trues
 
-    batch_size = int(argumentsDict.get('-e', argumentsDict.get('--epochs', 32)))
-    num_classes = 10
-    epochs = bool(argumentsDict.get('-a', argumentsDict.get('--augmentation', 100)))
+    batch_size = int(getValue(argumentsDict, '-b', '--batch_size', 32))
+
+    epochs = bool(argumentsDict.get('-e', argumentsDict.get('--epochs', 100)))
+
     data_augmentation = bool(argumentsDict.get('-a', argumentsDict.get('--augmentation', True)))
 
     save_dir = os.path.join(os.getcwd(), 'saved_models')
@@ -44,7 +48,11 @@ def main(argumentList):
     model_key = argumentsDict.get('-k', argumentsDict.get('--model_key', str(time.time())))
     model_name = model_name + '_' + model_key
 
+    num_classes = 10
     print('Model Name:', model_name)
+
+    # Parameters tuning
+    conv_layers = int(getValue(argumentsDict, '-c', '--conv_layers', 3))
 
     # The data, shuffled and split between train and test sets:
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
@@ -54,9 +62,15 @@ def main(argumentList):
 
     if test_mode:
 
+        dumb_accuracy = random.uniform(0, 100)
+
         # Score trained model.
         print('Test loss:', random.uniform(0, 10))
-        print('Test accuracy:', random.uniform(0, 100))
+        print('Test accuracy:', dumb_accuracy)
+
+        sys.stdout.write(str(dumb_accuracy))
+        sys.stdout.flush()
+        sys.exit(0)
 
     else:
 
@@ -65,22 +79,33 @@ def main(argumentList):
         y_test = keras.utils.to_categorical(y_test, num_classes)
 
         model = Sequential()
+
         model.add(Conv2D(32, (3, 3), padding='same',
                          input_shape=x_train.shape[1:]))
         model.add(Activation('relu'))
-        model.add(Conv2D(32, (3, 3)))
-        model.add(Activation('relu'))
-        model.add(MaxPooling2D(pool_size=(2, 2)))
-        model.add(Dropout(0.25))
 
-        model.add(Conv2D(64, (3, 3), padding='same'))
-        model.add(Activation('relu'))
-        model.add(Conv2D(64, (3, 3)))
-        model.add(Activation('relu'))
-        model.add(MaxPooling2D(pool_size=(2, 2)))
-        model.add(Dropout(0.25))
+        #
+        # model.add(Conv2D(32, (3, 3)))
+        # model.add(Activation('relu'))
+        #
+        # model.add(MaxPooling2D(pool_size=(2, 2)))
+        # model.add(Dropout(0.25))
+        #
+        # model.add(Conv2D(64, (3, 3), padding='same'))
+        # model.add(Activation('relu'))
+        #
+        # model.add(Conv2D(64, (3, 3)))
+        # model.add(Activation('relu'))
+        #
+        # model.add(MaxPooling2D(pool_size=(2, 2)))
+        # model.add(Dropout(0.25))
+
+        for i in range(1, conv_layers):
+            model.add(Conv2D(32 + i, (3, 3)))
+            model.add(Activation('relu'))
 
         model.add(Flatten())
+
         model.add(Dense(512))
         model.add(Activation('relu'))
         model.add(Dropout(0.5))
@@ -144,6 +169,14 @@ def main(argumentList):
         scores = model.evaluate(x_test, y_test, verbose=1)
         print('Test loss:', scores[0])
         print('Test accuracy:', scores[1])
+
+        sys.stdout.write(str(scores[1]))
+        sys.stdout.flush()
+        sys.exit(0)
+
+
+def getValue(dictionary, shortKey, longKey, default):
+    return dictionary.get(shortKey, dictionary.get(longKey, default))
 
 
 if __name__ == "__main__":
