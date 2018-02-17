@@ -20,9 +20,9 @@ import sys, getopt, time
 def main(argumentList):
     trues = ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']
 
-    unixOptions = "a:b:m:k:e:t:c:"
+    unixOptions = "a:b:m:k:e:t:c:f:n:"
     gnuOptions = ["augmentation=", "batch_size=", "model_name=", "model_key=", "epochs=", "test_mode=",
-                  "conv_layers="]
+                  "conv_layers=", "full_layers=", "neurons_map="]
 
     try:
         arguments, values = getopt.getopt(argumentList, unixOptions, gnuOptions)
@@ -52,7 +52,21 @@ def main(argumentList):
     print('Model Name:', model_name)
 
     # Parameters tuning
+
+    # Number of convolutional layers from 3 to 50
     conv_layers = int(getValue(argumentsDict, '-c', '--conv_layers', 3))
+
+    # Number of fully connected layers from 1 to 4
+    full_layers = int(getValue(argumentsDict, '-f', '--full_layers', 1))
+
+    # Map of neurons for each layers:
+    # Number of maps in a convolutional layer from 8 to 512
+    # Number of fully connected layers from 1 to 4
+    neurons_map = getValue(argumentsDict, '-n', '--neurons_map', "32,32,32;512")
+
+    [conv_map, full_map] = neurons_map.split(";")
+    conv_map = conv_map.split(',')
+    full_map = full_map.split(',')
 
     # The data, shuffled and split between train and test sets:
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
@@ -80,35 +94,21 @@ def main(argumentList):
 
         model = Sequential()
 
-        model.add(Conv2D(32, (3, 3), padding='same',
+        model.add(Conv2D(int(conv_map[0]), (3, 3), padding='same',
                          input_shape=x_train.shape[1:]))
         model.add(Activation('relu'))
 
-        #
-        # model.add(Conv2D(32, (3, 3)))
-        # model.add(Activation('relu'))
-        #
-        # model.add(MaxPooling2D(pool_size=(2, 2)))
-        # model.add(Dropout(0.25))
-        #
-        # model.add(Conv2D(64, (3, 3), padding='same'))
-        # model.add(Activation('relu'))
-        #
-        # model.add(Conv2D(64, (3, 3)))
-        # model.add(Activation('relu'))
-        #
-        # model.add(MaxPooling2D(pool_size=(2, 2)))
-        # model.add(Dropout(0.25))
-
         for i in range(1, conv_layers):
-            model.add(Conv2D(32 + i, (3, 3)))
+            model.add(Conv2D(int(conv_map[i]), (3, 3)))
             model.add(Activation('relu'))
 
         model.add(Flatten())
 
-        model.add(Dense(512))
-        model.add(Activation('relu'))
-        model.add(Dropout(0.5))
+        for i in range(0, full_layers):
+            model.add(Dense(int(full_map[i])))
+            model.add(Activation('relu'))
+            model.add(Dropout(0.5))
+
         model.add(Dense(num_classes))
         model.add(Activation('softmax'))
 
