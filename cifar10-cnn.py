@@ -33,7 +33,7 @@ def main(argumentList):
 
     argumentsDict = dict(arguments)
 
-    test_mode = getValue(argumentsDict, '-t', '--test_mode', False) in trues
+    test_mode = (getValue(argumentsDict, '-t', '--test_mode', False)).lower() in trues
 
     batch_size = int(getValue(argumentsDict, '-b', '--batch_size', 32))
 
