@@ -55,14 +55,17 @@ def main(argumentList):
 
     # Number of convolutional layers from 3 to 50
     conv_layers = int(getValue(argumentsDict, '-c', '--conv_layers', 3))
+    print('Conv Layers:', conv_layers)
 
     # Number of fully connected layers from 1 to 4
     full_layers = int(getValue(argumentsDict, '-f', '--full_layers', 1))
+    print('Full Layers:', full_layers)
 
     # Map of neurons for each layers:
     # Number of maps in a convolutional layer from 8 to 512
     # Number of fully connected layers from 1 to 4
     neurons_map = getValue(argumentsDict, '-n', '--neurons_map', "32,32,32;512")
+    print('Neurons Map:', neurons_map)
 
     [conv_map, full_map] = neurons_map.split(";")
     conv_map = conv_map.split(',')
