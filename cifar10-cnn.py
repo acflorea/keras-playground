@@ -64,10 +64,10 @@ def main(argumentList):
     # Map of neurons for each layers:
     # Number of maps in a convolutional layer from 8 to 512
     # Number of fully connected layers from 1 to 4
-    neurons_map = getValue(argumentsDict, '-n', '--neurons_map', "32,32,32;512")
+    neurons_map = getValue(argumentsDict, '-n', '--neurons_map', "32,32,32&512")
     print('Neurons Map:', neurons_map)
 
-    [conv_map, full_map] = neurons_map.split(";")
+    [conv_map, full_map] = neurons_map.split("&")
     conv_map = conv_map.split(',')
     full_map = full_map.split(',')
 
