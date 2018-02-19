@@ -37,7 +37,7 @@ def main(argumentList):
 
     batch_size = int(getValue(argumentsDict, '-b', '--batch_size', 32))
 
-    epochs = bool(argumentsDict.get('-e', argumentsDict.get('--epochs', 100)))
+    epochs = int(argumentsDict.get('-e', argumentsDict.get('--epochs', 100)))
 
     data_augmentation = bool(argumentsDict.get('-a', argumentsDict.get('--augmentation', True)))
 
