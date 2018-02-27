@@ -11,13 +11,13 @@ import tensorflow as tf
 import random as rn
 
 import keras
+from keras import backend as k
 from keras.datasets import cifar10
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 import os
-import random
 
 import sys, getopt, time
 
@@ -28,6 +28,9 @@ def main(argumentList):
     np.random.seed(42)
     rn.seed(42)
     tf.set_random_seed(42)
+
+    sess = tf.Session(graph=tf.get_default_graph())
+    k.set_session(sess)
 
     trues = ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']
 
