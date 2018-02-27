@@ -10,33 +10,34 @@ import numpy as np
 import tensorflow as tf
 import random as rn
 
-import keras
-from keras import backend as k
-from keras.datasets import cifar10
-from keras.preprocessing.image import ImageDataGenerator
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Conv2D, MaxPooling2D
 import os
-
 import sys, getopt, time
 
 
 def main(argumentList):
-
     # The meaning of life should be fixed
     np.random.seed(42)
     rn.seed(42)
     tf.set_random_seed(42)
 
-    sess = tf.Session(graph=tf.get_default_graph())
+    import keras
+    from keras import backend as k
+    from keras.datasets import cifar10
+    from keras.preprocessing.image import ImageDataGenerator
+    from keras.models import Sequential
+    from keras.layers import Dense, Dropout, Activation, Flatten
+    from keras.layers import Conv2D, MaxPooling2D
+
+    session_conf = tf.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
+
+    sess = tf.Session(graph=tf.get_default_graph(), config=session_conf))
     k.set_session(sess)
 
     trues = ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']
 
     unixOptions = "a:b:m:k:e:t:c:f:n:"
     gnuOptions = ["augmentation=", "batch_size=", "model_name=", "model_key=", "epochs=", "test_mode=",
-                  "conv_layers=", "full_layers=", "neurons_map="]
+    "conv_layers=", "full_layers=", "neurons_map="]
 
     try:
         arguments, values = getopt.getopt(argumentList, unixOptions, gnuOptions)
