@@ -96,10 +96,10 @@ def main(argumentList):
 
     if test_mode:
 
-        dumb_accuracy = random.uniform(0, 100)
+        dumb_accuracy = rn.uniform(0, 100)
 
         # Score trained model.
-        print('Test loss:', random.uniform(0, 10))
+        print('Test loss:', rn.uniform(0, 10))
         print('Test accuracy:', dumb_accuracy)
 
         sys.stdout.write(str(dumb_accuracy))
