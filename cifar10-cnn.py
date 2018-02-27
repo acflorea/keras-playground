@@ -7,6 +7,8 @@ It gets to 75% validation accuracy in 25 epochs, and 79% after 50 epochs.
 from __future__ import print_function
 
 import numpy as np
+import tensorflow as tf
+import random as rn
 
 import keras
 from keras.datasets import cifar10
@@ -24,6 +26,8 @@ def main(argumentList):
 
     # The meaning of life should be fixed
     np.random.seed(42)
+    rn.seed(42)
+    tf.set_random_seed(42)
 
     trues = ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']
 
