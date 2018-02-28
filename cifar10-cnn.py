@@ -30,14 +30,15 @@ def main(argumentList):
 
     session_conf = tf.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
 
-    sess = tf.Session(graph=tf.get_default_graph(), config=session_conf))
+    # sess = tf.Session(graph=tf.get_default_graph(), config=session_conf)
+    sess = tf.Session(graph=tf.get_default_graph())
     k.set_session(sess)
 
     trues = ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']
 
     unixOptions = "a:b:m:k:e:t:c:f:n:"
     gnuOptions = ["augmentation=", "batch_size=", "model_name=", "model_key=", "epochs=", "test_mode=",
-    "conv_layers=", "full_layers=", "neurons_map="]
+                  "conv_layers=", "full_layers=", "neurons_map="]
 
     try:
         arguments, values = getopt.getopt(argumentList, unixOptions, gnuOptions)
@@ -122,6 +123,9 @@ def main(argumentList):
         for i in range(1, conv_layers):
             model.add(Conv2D(int(conv_map[i]), (3, 3)))
             model.add(Activation('relu'))
+            if i % 2 == 0:
+                model.add(MaxPooling2D(pool_size=(2, 2)))
+                model.add(Dropout(0.25))
 
         model.add(Flatten())
 
