@@ -55,7 +55,7 @@ def main(argumentList):
 
     epochs = int(argumentsDict.get('-e', argumentsDict.get('--epochs', 10)))
 
-    data_augmentation = bool(argumentsDict.get('-a', argumentsDict.get('--augmentation', True)))
+    data_augmentation = bool(argumentsDict.get('-a', argumentsDict.get('--augmentation', False)))
 
     save_dir = os.path.join(os.getcwd(), 'saved_models')
     model_name = argumentsDict.get('-m', argumentsDict.get('--model_name', 'keras_cifar10_trained_model.h5'))
