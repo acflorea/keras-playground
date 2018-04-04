@@ -13,7 +13,6 @@ import random as rn
 import os
 import sys, getopt, time
 
-
 def main(argumentList):
     # The meaning of life should be fixed
     np.random.seed(42)
