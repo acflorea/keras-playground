@@ -35,7 +35,7 @@ def csv_example():
     # f = FanovaFromCSV("data/optim_6_2_conv_pooling_50epoch_na.out.parsed.cleaned.csv")
     # f = FanovaFromCSV("data/optim_6_2_conv_pooling_50epoch_na.out.parsed.csv")
 
-    f = FanovaFromCSV("data/optim_6conv_pooling_50epoch_na.out.parsed.csv")
+    f = FanovaFromCSV("data/optim_6conv_pooling_50epoch_na.out.parsed.cleaned.csv")
 
     f.print_all_marginals(100)
 
