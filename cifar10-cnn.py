@@ -68,7 +68,7 @@ def main(argumentList):
 
     # Parameters tuning
 
-    # Number of convolutional layers from 3 to 50
+    # Number of convolutional layers from 3 to 6
     conv_layers = int(getValue(argumentsDict, '-c', '--conv_layers', 3))
     print('Conv Layers:', conv_layers)
 
