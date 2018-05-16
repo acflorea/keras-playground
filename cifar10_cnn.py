@@ -73,7 +73,7 @@ def main(argumentList):
     conv_map = conv_map.split(',')
     full_map = full_map.split(',')
 
-    acc = cifar10_cnn(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map, model_name,
+    acc = cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map, model_name,
                       num_classes, save_dir, test_mode)
 
     sys.stdout.write(str(acc))
@@ -81,7 +81,7 @@ def main(argumentList):
     sys.exit(0)
 
 
-def cifar10_cnn(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map, model_name,
+def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map, model_name,
                 num_classes, save_dir, test_mode):
     import keras
     from keras import backend as k
