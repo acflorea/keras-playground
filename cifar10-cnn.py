@@ -13,25 +13,12 @@ import random as rn
 import os
 import sys, getopt, time
 
+
 def main(argumentList):
     # The meaning of life should be fixed
     np.random.seed(42)
     rn.seed(42)
     tf.set_random_seed(42)
-
-    import keras
-    from keras import backend as k
-    from keras.datasets import cifar10
-    from keras.preprocessing.image import ImageDataGenerator
-    from keras.models import Sequential
-    from keras.layers import Dense, Dropout, Activation, Flatten
-    from keras.layers import Conv2D, MaxPooling2D
-
-    session_conf = tf.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
-
-    # sess = tf.Session(graph=tf.get_default_graph(), config=session_conf)
-    sess = tf.Session(graph=tf.get_default_graph())
-    k.set_session(sess)
 
     trues = ['true', '1', 't', 'y', 'yes', 'yeah', 'yup', 'certainly', 'uh-huh']
 
@@ -86,15 +73,37 @@ def main(argumentList):
     conv_map = conv_map.split(',')
     full_map = full_map.split(',')
 
+    acc = cifar10_cnn(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map, model_name,
+                      num_classes, save_dir, test_mode)
+
+    sys.stdout.write(str(acc))
+    sys.stdout.flush()
+    sys.exit(0)
+
+
+def cifar10_cnn(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map, model_name,
+                num_classes, save_dir, test_mode):
+    import keras
+    from keras import backend as k
+    from keras.datasets import cifar10
+    from keras.preprocessing.image import ImageDataGenerator
+    from keras.models import Sequential
+    from keras.layers import Dense, Dropout, Activation, Flatten
+    from keras.layers import Conv2D, MaxPooling2D
+
+    session_conf = tf.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
+
+    # sess = tf.Session(graph=tf.get_default_graph(), config=session_conf)
+    sess = tf.Session(graph=tf.get_default_graph())
+    k.set_session(sess)
+
     # If accuracy after 1t epoch is below this limit then break the training
     acc_break_limit = -0.15
-
     # The data, shuffled and split between train and test sets:
     (x_train, y_train), (x_test, y_test) = cifar10.load_data()
     print('x_train shape:', x_train.shape)
     print(x_train.shape[0], 'train samples')
     print(x_test.shape[0], 'test samples')
-
     if test_mode:
 
         dumb_accuracy = rn.uniform(0, 100)
@@ -103,9 +112,7 @@ def main(argumentList):
         print('Test loss:', rn.uniform(0, 10))
         print('Test accuracy:', dumb_accuracy)
 
-        sys.stdout.write(str(dumb_accuracy))
-        sys.stdout.flush()
-        sys.exit(0)
+        acc = dumb_accuracy
 
     else:
 
@@ -226,9 +233,9 @@ def main(argumentList):
         print('[results] Test accuracy:', scores[1])
         print('[results] Test loss:', scores[0])
 
-        sys.stdout.write(str(scores[1]))
-        sys.stdout.flush()
-        sys.exit(0)
+        acc = scores[1]
+
+    return acc
 
 
 def getValue(dictionary, shortKey, longKey, default):
