@@ -10,7 +10,7 @@ import optunity.metrics
 from optunity import functions as fun
 from optunity import search_spaces, api
 
-from cifar10_cnn import cifar10_cnn_do
+from cifar10_cnn_1 import cifar10_cnn_do
 
 import numpy as np
 import tensorflow as tf
@@ -104,7 +104,7 @@ def cifar10_cnn(conv_layers, maps_1, maps_2, maps_3, maps_4, maps_5, maps_6, ful
 
     full_map = str(ineurons_1) + "," + str(ineurons_2) + "," + str(ineurons_3) + "," + str(ineurons_4)
 
-    cifar10_cnn_do(32, iconv_layers, conv_map, False, 50, ifull_layers, full_map, model_name,
+    cifar10_cnn_do(32, iconv_layers, conv_map.split(','), False, 50, ifull_layers, full_map.split(','), model_name,
                    10, save_dir, False)
 
     return 0.0
