@@ -104,10 +104,8 @@ def cifar10_cnn(conv_layers, maps_1, maps_2, maps_3, maps_4, maps_5, maps_6, ful
 
     full_map = str(ineurons_1) + "," + str(ineurons_2) + "," + str(ineurons_3) + "," + str(ineurons_4)
 
-    cifar10_cnn_do(32, iconv_layers, conv_map.split(','), False, 50, ifull_layers, full_map.split(','), model_name,
+    return  cifar10_cnn_do(32, iconv_layers, conv_map.split(','), False, 50, ifull_layers, full_map.split(','), model_name,
                    10, save_dir, False)
-
-    return 0.0
 
 
 if __name__ == "__main__":
