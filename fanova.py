@@ -32,24 +32,28 @@ def online_lda():
 
 def csv_example():
     marginals = []
-    f = FanovaFromCSV("data/optim_6_2_conv_pooling_50epoch_na.out.parsed.csv")
-    marginals.append(f.get_all_pairwise_marginals())
-    marginals.append(f.get_marginal(0))
-    marginals.append(f.get_marginal(1))
-    marginals.append(f.get_marginal(2))
-    marginals.append(f.get_marginal(3))
-    marginals.append(f.get_marginal(4))
-    marginals.append(f.get_marginal(5))
-    marginals.append(f.get_marginal(6))
-    marginals.append(f.get_marginal(7))
-    marginals.append(f.get_marginal(8))
-    marginals.append(f.get_marginal(9))
-    marginals.append(f.get_marginal(10))
-    marginals.append(f.get_marginal(11))
+    f = FanovaFromCSV("data/synthetic.csv")
+    # f = FanovaFromCSV("data/optim_6conv_pooling_50epoch_na.out.parsed.csv")
+    # f = FanovaFromCSV("data/optim_6conv_pooling_50epoch_na.out.parsed_100.csv")
 
+    # marginals.append(f.get_all_pairwise_marginals())
+    # marginals.append(f.get_marginal(0))
+    # marginals.append(f.get_marginal(1))
+    # marginals.append(f.get_marginal(2))
+    # marginals.append(f.get_marginal(3))
+    # marginals.append(f.get_marginal(4))
+    # marginals.append(f.get_marginal(5))
+    # marginals.append(f.get_marginal(6))
+    # marginals.append(f.get_marginal(7))
+    # marginals.append(f.get_marginal(8))
+    # marginals.append(f.get_marginal(9))
+    # marginals.append(f.get_marginal(10))
+    # marginals.append(f.get_marginal(11))
+
+
+    f.print_all_marginals(1000)
 
     return marginals
-
 
 if __name__ == "__main__":
     example = sys.argv[1]
