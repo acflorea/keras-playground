@@ -32,7 +32,7 @@ def online_lda():
 
 def csv_example():
     marginals = []
-    f = FanovaFromCSV("data/synthetic.csv")
+    f = FanovaFromCSV("data/heart.csv")
     # f = FanovaFromCSV("data/optim_6conv_pooling_50epoch_na.out.parsed.csv")
     # f = FanovaFromCSV("data/optim_6conv_pooling_50epoch_na.out.parsed_100.csv")
 
@@ -49,7 +49,6 @@ def csv_example():
     # marginals.append(f.get_marginal(9))
     # marginals.append(f.get_marginal(10))
     # marginals.append(f.get_marginal(11))
-
 
     f.print_all_marginals(1000)
 
