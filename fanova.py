@@ -30,25 +30,9 @@ def online_lda():
     return marginals
 
 
-def csv_example():
+def csv_example(fileLocation):
     marginals = []
-    f = FanovaFromCSV("data/grievank_4.csv")
-    # f = FanovaFromCSV("data/optim_6conv_pooling_50epoch_na.out.parsed.csv")
-    # f = FanovaFromCSV("data/optim_6conv_pooling_50epoch_na.out.parsed_100.csv")
-
-    # marginals.append(f.get_all_pairwise_marginals())
-    # marginals.append(f.get_marginal(0))
-    # marginals.append(f.get_marginal(1))
-    # marginals.append(f.get_marginal(2))
-    # marginals.append(f.get_marginal(3))
-    # marginals.append(f.get_marginal(4))
-    # marginals.append(f.get_marginal(5))
-    # marginals.append(f.get_marginal(6))
-    # marginals.append(f.get_marginal(7))
-    # marginals.append(f.get_marginal(8))
-    # marginals.append(f.get_marginal(9))
-    # marginals.append(f.get_marginal(10))
-    # marginals.append(f.get_marginal(11))
+    f = FanovaFromCSV(fileLocation)
 
     f.print_all_marginals(1000)
 
@@ -59,5 +43,5 @@ if __name__ == "__main__":
     if example == 'online_lda':
         res = online_lda()
     elif example == 'csv_example':
-        res = csv_example()
+        res = csv_example(sys.argv[2])
     print(res)
