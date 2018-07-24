@@ -15,8 +15,8 @@ import sys, getopt, time
 
 from slackclient import SlackClient
 
-def main(argumentList):
 
+def main(argumentList):
     slack_token = os.environ["SLACK_API_TOKEN"]
     sc = SlackClient(slack_token)
 
@@ -280,8 +280,8 @@ def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs,
         print('[results] Test loss:', scores[0])
 
         if sc:
-            slackIt(sc, '[results] Test accuracy:' + scores[1])
-            slackIt(sc, '[results] Test loss:', scores[0])
+            slackIt(sc, '[results] Test accuracy:' + str(scores[1]))
+            slackIt(sc, '[results] Test loss:', str(scores[0]))
 
         acc = scores[1]
 
