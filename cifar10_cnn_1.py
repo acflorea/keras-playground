@@ -15,6 +15,13 @@ import sys, getopt, time
 
 
 def main(argumentList):
+    from slackclient import SlackClient
+
+    slack_token = os.environ["SLACK_API_TOKEN"]
+    sc = SlackClient(slack_token)
+
+    slackIt(sc, "cifar10_cnn_1 start :rocket:")
+
     # The meaning of life should be fixed
     np.random.seed(42)
     rn.seed(42)
@@ -52,22 +59,29 @@ def main(argumentList):
 
     num_classes = 10
     print('Model Name:', model_name)
+    slackIt(sc, 'Model Name: ' + model_name)
 
     # Parameters tuning
 
     # Number of convolutional layers from 3 to 6
     conv_layers = int(getValue(argumentsDict, '-c', '--conv_layers', 3))
     print('Conv Layers:', conv_layers)
+    if sc:
+        slackIt(sc, 'Conv Layers: ' + str(conv_layers))
 
     # Number of fully connected layers from 1 to 4
     full_layers = int(getValue(argumentsDict, '-f', '--full_layers', 1))
     print('Full Layers:', full_layers)
+    if sc:
+        slackIt(sc, 'Full Layers: ' + str(full_layers))
 
     # Map of neurons for each layers:
     # Number of maps in a convolutional layer from 8 to 512
     # Number of fully connected layers from 1 to 4
     neurons_map = getValue(argumentsDict, '-n', '--neurons_map', "32,32,32&512")
     print('Neurons Map:', neurons_map)
+    if sc:
+        slackIt(sc, 'Neurons Map: ' + neurons_map)
 
     [conv_map, full_map] = neurons_map.split("&")
     conv_map = conv_map.split(',')
@@ -75,15 +89,25 @@ def main(argumentList):
 
     acc = cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map,
                          model_name,
-                         num_classes, save_dir, test_mode)
+                         num_classes, save_dir, test_mode,
+                         sc)
 
     sys.stdout.write(str(acc))
     sys.stdout.flush()
     sys.exit(0)
 
 
+# Send message to slack
+def slackIt(sc, text, channel="cifar10_cnn_1"):
+    sc.api_call(
+        "chat.postMessage",
+        channel=channel,
+        text=text
+    )
+
+
 def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map, model_name,
-                   num_classes, save_dir, test_mode):
+                   num_classes, save_dir, test_mode, sc=None):
     import keras
     from keras import backend as k
     from keras.datasets import cifar10
@@ -175,9 +199,9 @@ def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs,
 
                 for tts in range(0, train_test_sessions):
                     model.fit(x_train, y_train,
-                                        epochs=(tts + 1) * 5,
-                                        validation_data=(x_test, y_test),
-                                        initial_epoch=tts * 5)
+                              epochs=(tts + 1) * 5,
+                              validation_data=(x_test, y_test),
+                              initial_epoch=tts * 5)
 
                     # Score trained model.
                     scores = model.evaluate(x_test, y_test, verbose=1)
@@ -254,6 +278,10 @@ def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs,
 
         print('[results] Test accuracy:', scores[1])
         print('[results] Test loss:', scores[0])
+
+        if sc:
+            slackIt(sc, '[results] Test accuracy:' + scores[1])
+            slackIt(sc, '[results] Test loss:', scores[0])
 
         acc = scores[1]
 
