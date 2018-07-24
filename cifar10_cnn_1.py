@@ -281,7 +281,7 @@ def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs,
 
         if sc:
             slackIt(sc, '[results] Test accuracy:' + str(scores[1]))
-            slackIt(sc, '[results] Test loss:', str(scores[0]))
+            slackIt(sc, '[results] Test loss:' + str(scores[0]))
 
         acc = scores[1]
 
