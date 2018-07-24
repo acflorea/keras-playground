@@ -113,7 +113,7 @@ def cifar10_cnn(conv_layers, maps_1, maps_2, maps_3, maps_4, maps_5, maps_6, ful
     slack_token = os.environ["SLACK_API_TOKEN"]
     sc = SlackClient(slack_token)
 
-    return  cifar10_cnn_do(32, iconv_layers, conv_map.split(','), False, 50, ifull_layers, full_map.split(','), model_name,
+    return  cifar10_cnn_do(32, iconv_layers, conv_map.split(','), False, 5, ifull_layers, full_map.split(','), model_name,
                    10, save_dir, False, sc)
 
 
