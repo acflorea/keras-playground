@@ -13,9 +13,9 @@ import random as rn
 import os
 import sys, getopt, time
 
+from slackclient import SlackClient
 
 def main(argumentList):
-    from slackclient import SlackClient
 
     slack_token = os.environ["SLACK_API_TOKEN"]
     sc = SlackClient(slack_token)
