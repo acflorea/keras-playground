@@ -95,11 +95,14 @@ def main(argumentList):
 
 # Send message to slack
 def slackIt(sc, text, channel="cifar10_cnn_1"):
-    sc.api_call(
+    response = sc.api_call(
         "chat.postMessage",
         channel=channel,
         text=text
     )
+    error = response.get("error", None)
+    if error != None:
+        print("Can't post Slack message due to {}".format(error))
 
 
 def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map, model_name,

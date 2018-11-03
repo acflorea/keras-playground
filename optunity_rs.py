@@ -32,6 +32,8 @@ def main(args):
     num_evals = int(args[1])
     solver_name = args[2]
 
+    slackIt(sc, "using {}".format(str(args)), slack_channel)
+
     print("Input: " + str(args))
 
     maps = [100, 1024]
@@ -73,8 +75,10 @@ def main(args):
     # solution, details = api.optimize(solver, f, maximize=True, max_evals=num_evals,
     #                                  pmap=optunity.pmap, decoder=tree.decode)
 
-    print("Optimal parameters: " + str(solution))
-    print("Optimal value: " + str(details.optimum))
+    slackIt(sc, "Optimal parameters: {}".format(str(solution)), slack_channel)
+    print("Optimal parameters: {}".format(str(solution)))
+    slackIt(sc, "Optimal value: {}".format(str(details.optimum)), slack_channel)
+    print("Optimal value: {}".format(str(details.optimum)))
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
@@ -113,8 +117,9 @@ def cifar10_cnn(conv_layers, maps_1, maps_2, maps_3, maps_4, maps_5, maps_6, ful
 
     sc = SlackClient(slack_token)
 
-    return  cifar10_cnn_do(32, iconv_layers, conv_map.split(','), False, 5, ifull_layers, full_map.split(','), model_name,
-                   10, save_dir, False, sc, slack_channel)
+    return cifar10_cnn_do(32, iconv_layers, conv_map.split(','), False, 5, ifull_layers, full_map.split(','),
+                          model_name,
+                          10, save_dir, False, sc, slack_channel)
 
 
 if __name__ == "__main__":
