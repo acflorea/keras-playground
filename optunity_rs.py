@@ -17,9 +17,12 @@ def main(args):
     start_time = time.time()
 
     slack_token = os.environ["SLACK_API_TOKEN"]
+
+    slack_channel = os.environ["SLACK_CHANNEL"]
+
     sc = SlackClient(slack_token)
 
-    slackIt(sc, "optunity start :rocket:")
+    slackIt(sc, "optunity start :rocket:", slack_channel)
 
     # The meaning of life should be fixed
     np.random.seed(42)
@@ -106,10 +109,12 @@ def cifar10_cnn(conv_layers, maps_1, maps_2, maps_3, maps_4, maps_5, maps_6, ful
     full_map = str(ineurons_1) + "," + str(ineurons_2) + "," + str(ineurons_3) + "," + str(ineurons_4)
 
     slack_token = os.environ["SLACK_API_TOKEN"]
+    slack_channel = os.environ["SLACK_CHANNEL"]
+
     sc = SlackClient(slack_token)
 
     return  cifar10_cnn_do(32, iconv_layers, conv_map.split(','), False, 5, ifull_layers, full_map.split(','), model_name,
-                   10, save_dir, False, sc)
+                   10, save_dir, False, sc, slack_channel)
 
 
 if __name__ == "__main__":

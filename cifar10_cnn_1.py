@@ -84,9 +84,9 @@ def main(argumentList):
     full_map = full_map.split(',')
 
     acc = cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map,
-                             model_name,
-                             num_classes, save_dir, test_mode,
-                             sc)
+                         model_name,
+                         num_classes, save_dir, test_mode,
+                         sc)
 
     sys.stdout.write(str(acc))
     sys.stdout.flush()
@@ -103,7 +103,7 @@ def slackIt(sc, text, channel="cifar10_cnn_1"):
 
 
 def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map, model_name,
-                   num_classes, save_dir, test_mode, sc=None):
+                   num_classes, save_dir, test_mode, sc=None, slack_channel="cifar10_cnn_1"):
     import keras
     from keras import backend as k
     from keras.datasets import cifar10
@@ -283,9 +283,9 @@ def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs,
         print('[results] Test loss:', scores[0])
 
         if sc:
-            slackIt(sc, 'Confusion Matrix:' + str(matrix))
-            slackIt(sc, '[results] Test accuracy:' + str(scores[1]))
-            slackIt(sc, '[results] Test loss:' + str(scores[0]))
+            slackIt(sc, 'Confusion Matrix:' + str(matrix), slack_channel)
+            slackIt(sc, '[results] Test accuracy:' + str(scores[1]), slack_channel)
+            slackIt(sc, '[results] Test loss:' + str(scores[0]), slack_channel)
 
         acc = scores[1]
 
