@@ -1,9 +1,3 @@
-'''Train a simple deep CNN on the CIFAR10 small images dataset.
-
-It gets to 75% validation accuracy in 25 epochs, and 79% after 50 epochs.
-(it's still underfitting at that point, though).
-'''
-
 from __future__ import print_function
 
 import numpy as np
@@ -12,6 +6,8 @@ import random as rn
 
 import os
 import sys, getopt, time
+
+from sklearn import metrics
 
 from slackclient import SlackClient
 
@@ -46,7 +42,7 @@ def main(argumentList):
 
     batch_size = int(getValue(argumentsDict, '-b', '--batch_size', 32))
 
-    epochs = int(argumentsDict.get('-e', argumentsDict.get('--epochs', 50)))
+    epochs = int(argumentsDict.get('-e', argumentsDict.get('--epochs', 10)))
 
     data_augmentation = bool(argumentsDict.get('-a', argumentsDict.get('--augmentation', False)))
 
@@ -88,9 +84,9 @@ def main(argumentList):
     full_map = full_map.split(',')
 
     acc = cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs, full_layers, full_map,
-                         model_name,
-                         num_classes, save_dir, test_mode,
-                         sc)
+                             model_name,
+                             num_classes, save_dir, test_mode,
+                             sc)
 
     sys.stdout.write(str(acc))
     sys.stdout.flush()
@@ -276,10 +272,18 @@ def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs,
         # Score trained model.
         scores = model.evaluate(x_test, y_test)
 
+        predictions = model.predict(x_test)
+        y_pred = (predictions > 0.5)
+
+        matrix = metrics.confusion_matrix(y_test.argmax(axis=1), y_pred.argmax(axis=1))
+
+        print('Confusion Matrix: ', matrix)
+
         print('[results] Test accuracy:', scores[1])
         print('[results] Test loss:', scores[0])
 
         if sc:
+            slackIt(sc, 'Confusion Matrix:' + str(matrix))
             slackIt(sc, '[results] Test accuracy:' + str(scores[1]))
             slackIt(sc, '[results] Test loss:' + str(scores[0]))
 

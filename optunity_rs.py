@@ -1,22 +1,17 @@
+import os
+import random as rn
 import sys
 import time
-
-import os
-
 import uuid
-
-import optunity
-import optunity.metrics
-from optunity import functions as fun
-from optunity import search_spaces, api
-
-from cifar10_cnn_1 import cifar10_cnn_do, slackIt
 
 import numpy as np
 import tensorflow as tf
-import random as rn
-
+from optunity import functions as fun
+from optunity import search_spaces, api
 from slackclient import SlackClient
+
+from cifar10_cnn_1 import cifar10_cnn_do, slackIt
+
 
 def main(args):
     start_time = time.time()
@@ -36,8 +31,8 @@ def main(args):
 
     print("Input: " + str(args))
 
-    maps = [8, 512]
-    neurons = [5, 2048]
+    maps = [100, 1024]
+    neurons = [1024, 2048]
 
     search_space = {
         'conv_layers': {'3': {'maps_1': maps, 'maps_2': maps, 'maps_3': maps},
