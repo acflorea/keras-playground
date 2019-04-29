@@ -6,6 +6,7 @@ import uuid
 
 import numpy as np
 import tensorflow as tf
+from numpy import random
 from optunity import functions as fun
 from optunity import search_spaces, api
 from slackclient import SlackClient
@@ -85,6 +86,7 @@ def main(args):
 
 def cifar10_cnn(conv_layers, maps_1, maps_2, maps_3, maps_4, maps_5, maps_6, full_layers, neurons_1, neurons_2,
                 neurons_3, neurons_4):
+
     save_dir = os.path.join(os.getcwd(), 'saved_models')
     model_name = 'keras_cifar10_trained_model_' + str(uuid.uuid4()) + '.h5'
 
@@ -116,6 +118,8 @@ def cifar10_cnn(conv_layers, maps_1, maps_2, maps_3, maps_4, maps_5, maps_6, ful
     slack_channel = os.environ["SLACK_CHANNEL"]
 
     sc = SlackClient(slack_token)
+
+    return random.random()
 
     return cifar10_cnn_do(32, iconv_layers, conv_map.split(','), False, 5, ifull_layers, full_map.split(','),
                           model_name,
