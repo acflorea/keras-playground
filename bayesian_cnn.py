@@ -8,8 +8,6 @@ from slackclient import SlackClient
 
 from cifar10_cnn_1 import cifar10_cnn_do, slackIt
 
-import random
-
 sys.path.append("./")
 from bayes_opt import BayesianOptimization
 
