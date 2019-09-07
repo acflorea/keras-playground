@@ -199,7 +199,7 @@ def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs,
                 for tts in range(0, train_test_sessions):
                     model.fit(x_train, y_train,
                               epochs=(tts + 1) * 5,
-                              validation_data=(x_test, y_test),
+                              validation_split=0.1,
                               initial_epoch=tts * 5)
 
                     # Score trained model.
@@ -234,7 +234,7 @@ def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs,
             model.fit_generator(datagen.flow(x_train, y_train,
                                              batch_size=batch_size),
                                 epochs=1,
-                                validation_data=(x_test, y_test),
+                                validation_split=0.1,
                                 workers=4)
 
             # Score trained model.
@@ -250,7 +250,7 @@ def cifar10_cnn_do(batch_size, conv_layers, conv_map, data_augmentation, epochs,
                     model.fit_generator(datagen.flow(x_train, y_train,
                                                      batch_size=batch_size),
                                         epochs=(tts + 1) * 5,
-                                        validation_data=(x_test, y_test),
+                                        validation_split=0.1,
                                         workers=20,
                                         use_multiprocessing=True,
                                         initial_epoch=tts * 5)
